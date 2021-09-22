@@ -22,7 +22,7 @@ class CreateDataTable extends Migration
             $table->double('weight')->nullable();
             $table->double('total')->nullable();
             $table->double('average')->nullable();
-            $table->String('result',100);
+            $table->String('result',100)->nullable();
             $table->timestamps();
         });
     }
