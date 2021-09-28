@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Data;
 use App\Evaluate;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use PDF;
 
 class DataController extends Controller
 {
     public function getData(Request $request){
-        $data = Data::with('evaluates')->get();
+        $date = Carbon::parse($request->date)->toDateString();
+        $data = Data::with('evaluates')->whereDate('created_at', '=', $date)->get();
 
         return response()->json([
             'statusCode' => 201,
@@ -53,14 +56,15 @@ class DataController extends Controller
             ]);
 
             foreach (json_decode($item->listEvaluate) as $evaluate){
-                Evaluate::updateOrCreate([
-                    'data_id' => $data->id,
-                    'type'  => $evaluate->id,
-                ],[
-                    'repTiemp' => $evaluate->repTiemp,
-                    'note' => $evaluate->note,
-                    'pts' => $evaluate->pts,
-                ]);
+                if($evaluate->repTiemp != null || $evaluate->note != null || $evaluate->pts != null)
+                    Evaluate::updateOrCreate([
+                        'data_id' => $data->id,
+                        'type'  => $evaluate->id,
+                    ],[
+                        'repTiemp' => $evaluate->repTiemp,
+                        'note' => $evaluate->note,
+                        'pts' => $evaluate->pts,
+                    ]);
             }
 
         }
@@ -68,5 +72,20 @@ class DataController extends Controller
         return response()->json([
             'statusCode' => 201,
         ]);
+    }
+
+    public function getPDF(Request $request)
+    {
+        $name = $request->name;
+        $dateQueryInitial = Carbon::parse($request->date)->toDateString();
+        $dateQueryFinal = Carbon::parse($request->date)->addDay()->toDateString();
+        $dateSelect = Carbon::parse($request->date)->format('d/m/Y');
+        $date = Carbon::now()->format('d/m/Y');
+        $dataRecord = Data::with('evaluates')->whereDate('created_at', '>=', $dateQueryInitial)->whereDate('created_at', '<=', $dateQueryFinal)->get();
+        /* return view('report.record', compact('name', 'date', 'dataRecord')); */
+        $customPaper = array(0,0,1000,2000);
+        $pdf = \PDF::loadView('report.record', compact('name', 'dateSelect', 'date', 'dataRecord'))->setPaper($customPaper, 'landscape');
+        return $pdf->download('record.pdf');
+
     }
 }
