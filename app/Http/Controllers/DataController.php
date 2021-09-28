@@ -14,56 +14,67 @@ class DataController extends Controller
         $date = Carbon::parse($request->date)->toDateString();
         $data = Data::with('evaluates')->whereDate('created_at', '=', $date)->get();
 
+        $dataLast = Data::with('evaluates')->orderBy('id', 'desc')->first();
+        
+        if($dataLast)
+            $lastId = $dataLast->id;
+        else
+            $lastId = 1;
+
         return response()->json([
             'statusCode' => 201,
             'length' => count($data),
             'datas' => $data,
+            'lastId' => $lastId + 1,
         ]);
     }
 
     public function saveData(Request $request){
         $datas = array();
+        $date = Carbon::parse($request->date)->toDateString();
 
-        foreach (Data::select('id')->get() as $item){
+        foreach (Data::select('id')->whereDate('created_at', '=', $date)->get() as $item){
             array_push($datas, $item->id);
         }
 
-        $listData = json_decode($request->datas);
+        $listData = $request->datas;
         $listDataId = array();
         
         foreach ($listData as $item){
-            array_push($listDataId, $item->id);
+            array_push($listDataId, $item['id']);
         }
 
         $exceptArray = array_diff($datas, $listDataId);
+        
         foreach ($exceptArray as $id) {
             Data::whereId($id)->delete();
             Evaluate::where('data_id')->delete();
         }
 
         foreach ($listData as $item){
+
             $data = Data::updateOrCreate([
-                'id' => $item->id,
+                'id' => $item['id'],
             ],[
-                'specialty' => $item->specialty,
-                'name' => $item->name,
-                'age' => $item->age,
-                'size' => $item->size,
-                'weight' => $item->weight,
-                'total' => $item->total,
-                'average' => $item->average,
-                'result' => $item->result,
+                'specialty' => $item['specialty'],
+                'name' => $item['name'],
+                'age' => $item['age'],
+                'size' => $item['size'],
+                'weight' => $item['weight'],
+                'total' => $item['total'],
+                'average' => $item['average'],
+                'result' => $item['result'],
             ]);
 
-            foreach (json_decode($item->listEvaluate) as $evaluate){
-                if($evaluate->repTiemp != null || $evaluate->note != null || $evaluate->pts != null)
+            foreach ($item['listEvaluate'] as $evaluate){
+                if($evaluate['repTiemp'] != null || $evaluate['note'] != null || $evaluate['pts'] != null)
                     Evaluate::updateOrCreate([
-                        'data_id' => $data->id,
-                        'type'  => $evaluate->id,
+                        'data_id' => $data['id'],
+                        'type'  => $evaluate['id'],
                     ],[
-                        'repTiemp' => $evaluate->repTiemp,
-                        'note' => $evaluate->note,
-                        'pts' => $evaluate->pts,
+                        'repTiemp' => $evaluate['repTiemp'],
+                        'note' => $evaluate['note'],
+                        'pts' => $evaluate['pts'],
                     ]);
             }
 
