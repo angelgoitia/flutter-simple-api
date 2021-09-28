@@ -69,7 +69,7 @@ class DataController extends Controller
             foreach ($item['listEvaluate'] as $evaluate){
                 if($evaluate['repTiemp'] != null || $evaluate['note'] != null || $evaluate['pts'] != null)
                     Evaluate::updateOrCreate([
-                        'data_id' => $data['id'],
+                        'data_id' => $data->id,
                         'type'  => $evaluate['id'],
                     ],[
                         'repTiemp' => $evaluate['repTiemp'],
@@ -91,12 +91,13 @@ class DataController extends Controller
         $dateQueryInitial = Carbon::parse($request->date)->toDateString();
         $dateQueryFinal = Carbon::parse($request->date)->addDay()->toDateString();
         $dateSelect = Carbon::parse($request->date)->format('d/m/Y');
+        $dateSelectFile = Carbon::parse($request->date)->format('d-m-Y');
         $date = Carbon::now()->format('d/m/Y');
         $dataRecord = Data::with('evaluates')->whereDate('created_at', '>=', $dateQueryInitial)->whereDate('created_at', '<=', $dateQueryFinal)->get();
         /* return view('report.record', compact('name', 'date', 'dataRecord')); */
         $customPaper = array(0,0,1000,2000);
         $pdf = \PDF::loadView('report.record', compact('name', 'dateSelect', 'date', 'dataRecord'))->setPaper($customPaper, 'landscape');
-        return $pdf->download('record.pdf');
+        return $pdf->download($dateSelectFile.'_'.$name.'.pdf');
 
     }
 }
