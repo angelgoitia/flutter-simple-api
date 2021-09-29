@@ -143,8 +143,8 @@
                         <td> {{$item->specialty}} </td>
                         <td> {{$item->name}} </td>
                         <td> {{$item->age}} </td>
-                        <td> {{$item->size}} </td>
-                        <td> {{$item->weight}} </td>
+                        <td> {{$item->size != null? $item->size : "-"}} </td>
+                        <td> {{$item->weight != null? $item->weight : "-"}} </td>
                         @for ($i = 0; $i < 6; $i++)
                             <td> {{ (count($item->evaluates)-1) >= $i? $item->evaluates[$i]->repTiemp != null? $item->evaluates[$i]->repTiemp : "-" : "-" }} </td>
                             <td> {{ (count($item->evaluates)-1) >= $i? $item->evaluates[$i]->note != null? $item->evaluates[$i]->note : "-" : "-"  }} </td>
