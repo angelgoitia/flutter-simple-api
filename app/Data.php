@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Data extends Model
 {
     protected $fillable = [
-        'id', 'specialty', 'name', 'age', 'size', 'weight', 'total', 'average', 'result', 'created_at', 'user_id',
+        'id', 'gender', 'specialty', 'name', 'age', 'size', 'weight', 'total', 'average', 'result', 'created_at', 'user_id',
     ];
 
     public function evaluates()
