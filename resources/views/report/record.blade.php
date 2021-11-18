@@ -89,6 +89,7 @@
                         <th scope="col" rowspan="4">Grado <br> Especialidad</th>
                         <th scope="col" rowspan="4">Apellidos y Nombres</th>
                         <th scope="col" rowspan="4">Edad</th>
+                        <th scope="col" rowspan="4">Género</th>
                         <th scope="col" rowspan="4">Talla</th>
                         <th scope="col" rowspan="4">Peso</th>
                         <th scope="col" colspan="12">Primer Dia</th>
@@ -143,6 +144,7 @@
                         <td> {{$item->specialty}} </td>
                         <td> {{$item->name}} </td>
                         <td> {{$item->age}} </td>
+                        <td> {{$item->gender}} </td>
                         <td> {{$item->size != null? $item->size : "-"}} </td>
                         <td> {{$item->weight != null? $item->weight : "-"}} </td>
                         @for ($i = 0; $i < 6; $i++)

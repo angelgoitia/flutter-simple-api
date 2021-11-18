@@ -70,6 +70,7 @@ class DataController extends Controller
                 'specialty' => $item['specialty'],
                 'name' => $item['name'],
                 'age' => $item['age'],
+                'gender' => $item['gender'],
                 'size' => $item['size'],
                 'weight' => $item['weight'],
                 'total' => $item['total'],
