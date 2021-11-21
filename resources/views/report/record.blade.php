@@ -100,8 +100,7 @@
                     <tr class="table-title">
                         <th scope="col" colspan="3">Barras (M) o <br> Suspensión (F)</th>
                         <th scope="col" colspan="3">Abdominales</th>
-                        <th scope="col" colspan="3">Planchas (M) o <br> Semiplanchas (F)</th>
-                        <th scope="col" colspan="3">Carrera 2,400 mts ó <br> Carrera 4,800 mts</th>
+                        <th scope="col" colspan="3">Carrera 2,400 mts</th>
                         <th scope="col" colspan="3">Pista de Combate</th>
                         <th scope="col" colspan="3">Natacion: 25 mts</th>
                     </tr>
@@ -114,9 +113,6 @@
                         <th scope="col" colspan="3">COEF2</th>
                     </tr>
                     <tr class="table-title">
-                        <th scope="col">Rep</th>
-                        <th scope="col">Nota</th>
-                        <th scope="col">Ptos</th>
                         <th scope="col">Rep</th>
                         <th scope="col">Nota</th>
                         <th scope="col">Ptos</th>
@@ -144,10 +140,10 @@
                         <td> {{$item->specialty}} </td>
                         <td> {{$item->name}} </td>
                         <td> {{$item->age}} </td>
-                        <td> {{$item->gender}} </td>
+                        <td> {{$item->gender == 0? 'Masculino' : 'Femenino' }} </td>
                         <td> {{$item->size != null? $item->size : "-"}} </td>
                         <td> {{$item->weight != null? $item->weight : "-"}} </td>
-                        @for ($i = 0; $i < 6; $i++)
+                        @for ($i = 0; $i < 5; $i++)
                             <td> {{ (count($item->evaluates)-1) >= $i? $item->evaluates[$i]->repTiemp != null? $item->evaluates[$i]->repTiemp : "-" : "-" }} </td>
                             <td> {{ (count($item->evaluates)-1) >= $i? $item->evaluates[$i]->note != null? $item->evaluates[$i]->note : "-" : "-"  }} </td>
                             <td> {{ (count($item->evaluates)-1) >= $i? $item->evaluates[$i]->pts != null? $item->evaluates[$i]->pts : "-" : "-" }} </td>
