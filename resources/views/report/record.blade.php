@@ -93,7 +93,7 @@
                         <th scope="col" rowspan="4">Talla</th>
                         <th scope="col" rowspan="4">Peso</th>
                         <th scope="col" colspan="12">Primer Dia</th>
-                        <th scope="col" colspan="6">Segundo Dia</th>
+                        <th scope="col" colspan="3">Segundo Dia</th>
                         <th scope="col" colspan="2" rowspan="3">PUNTAJE</th>
                         <th scope="col" rowspan="4">Resultado <br> del <br> Control</th>
                     </tr>
@@ -107,7 +107,6 @@
                     <tr class="table-title">
                         <th scope="col" colspan="3">COEF2</th>
                         <th scope="col" colspan="3">COEF1</th>
-                        <th scope="col" colspan="3">COEF2</th>
                         <th scope="col" colspan="3">COEF1</th>
                         <th scope="col" colspan="3">COEF3</th>
                         <th scope="col" colspan="3">COEF2</th>
